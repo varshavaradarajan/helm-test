@@ -18,6 +18,7 @@ end
 cluster_name = env('CLUSTER_NAME')
 project_name = env('PROJECT_NAME')
 region = ENV['REGION'] || 'us-east1-b' # should be set up at the pipeline level
+release_name = 'gocd-helm-release'
 
 task :create_cluster do
   num_of_nodes = ENV['NUMBER_OF_NODES'] || 1
@@ -33,11 +34,14 @@ task :run_helm_checks do
   type_of_helm_repo = ENV['HELM_REPO'] || 'stable'
 
   rm_rf 'charts'
-  sh("git clone #{repo_url} charts || true")
+  sh("git clone #{repo_url} charts")
   sh("helm init")
   sh("helm lint charts/#{type_of_helm_repo}/gocd")
+  sh("helm install charts/#{type_of_helm_repo}/gocd --name #{release_name}")
+  sh("helm test #{release_name}")
 end
 
 task :teardown_cluster do
+  sh("helm delete --purge #{release_name}")
   sh("gcloud container clusters delete #{cluster_name} --quiet --zone #{region}")
 end
