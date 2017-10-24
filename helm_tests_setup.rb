@@ -24,7 +24,7 @@ task :create_cluster do
   disk_size = ENV['NODE_DISK_SIZE'] || 50
 
   sh("gcloud config set project #{project_name}")
-  sh("gcloud container clusters create #{cluster_name} --disk-size=#{disk_size} --num-nodes=#{num_of_nodes} --zone #{region}")
+  sh("gcloud container clusters create #{cluster_name} --disk-size=#{disk_size} --num-nodes=#{num_of_nodes} --zone #{region} || true")
   sh("gcloud container clusters get-credentials #{cluster_name} --zone #{region}")
 end
 
