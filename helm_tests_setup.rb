@@ -38,8 +38,8 @@ task :run_helm_checks do
   rm_rf 'charts'
   sh("git clone #{repo_url} charts")
   sh("helm lint charts/#{type_of_helm_repo}/gocd")
-  sh("helm install charts/#{type_of_helm_repo}/gocd --name #{release_name}")
-  sh("helm test #{release_name}")
+  # sh("helm install charts/#{type_of_helm_repo}/gocd --name #{release_name}")
+  # sh("helm test #{release_name}")
 end
 
 task :teardown_cluster do
