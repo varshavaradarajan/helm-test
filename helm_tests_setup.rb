@@ -43,6 +43,6 @@ task :run_helm_checks do
 end
 
 task :teardown_cluster do
-  sh("helm delete --purge #{release_name}")
+  # sh("helm delete --purge #{release_name}")
   sh("gcloud container clusters delete #{cluster_name} --quiet --zone #{region}")
 end
